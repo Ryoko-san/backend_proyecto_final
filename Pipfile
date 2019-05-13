@@ -12,9 +12,9 @@ django-heroku = "*"
 gunicorn = "*"
 django-cors-headers = "*"
 djangorestframework = "*"
-pygraphviz = "*"
 django-extensions = "*"
 django-rest-swagger = "*"
+pygraphviz = "*"
 
 [dev-packages]
 
