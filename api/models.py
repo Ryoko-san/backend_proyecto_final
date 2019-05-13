@@ -69,4 +69,4 @@ class Client(models.Model):
 class ClienttSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
-        fields = ('lient_name')
+        fields = ('client_name')
