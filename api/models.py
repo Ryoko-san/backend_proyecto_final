@@ -13,12 +13,13 @@ class Users(models.Model):
     f_name = models.CharField(max_length=250, null=False)
     l_name = models.CharField(max_length=250, null=False)
     role = models.CharField(max_length=250, null=False)
-    positions_id = models.ForeignKey('Positions', on_delete=models.CASCADE)
+    positions_id = models.ForeignKey('Positions', on_delete=models.CASCADE, null=True)
+
 
 class UsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Users
-        fields = ('email', 'phone_number', 'f_name', 'l_name', 'role')
+        fields = ('email', 'phone_number', 'f_name', 'l_name', 'role', 'id')
 
 
 class Shifts(models.Model):
@@ -32,7 +33,7 @@ class Shifts(models.Model):
 class ShiftsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shifts
-        fields = ('task', 'date')
+        fields = ('task', 'date', 'id')
 
 
 class Positions(models.Model):
@@ -43,7 +44,7 @@ class Positions(models.Model):
 class PositionsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Positions
-        fields = ('position_name')
+        fields = ('position_name', 'id')
 
 
 class Shift_types(models.Model):
@@ -56,7 +57,7 @@ class Shift_types(models.Model):
 class Shift_typesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shift_types
-        fields = ('shift_name', 'shift_start', 'shift_end')
+        fields = ('shift_name', 'shift_start', 'shift_end', 'id')
 
 
 class Client(models.Model):
@@ -66,7 +67,7 @@ class Client(models.Model):
     shifts_id = models.ForeignKey('Shifts', on_delete=models.CASCADE)
 
 
-class ClienttSerializer(serializers.ModelSerializer):
+class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = ('client_name')
