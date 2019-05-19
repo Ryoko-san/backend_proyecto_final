@@ -1,8 +1,11 @@
 from django.contrib import admin
 from django.urls import path, include
-from api import views
+from api import views, views_2
+
 urlpatterns = [
     path('users/<int:id>', views.UsersView.as_view(), name='Users_id'),
     path('users/', views.UsersView.as_view(), name='Users_id'),
-    path('contacts/', views.UsersView.as_view(), name='all-contacts'),
+    path('shifts/', views_2.ShiftsView.as_view(), name='Shifts'),
+    path('shifts/<int:id>', views_2.ShiftsView.as_view(), name='Shifts_id'),
+    path('shift-types/', views_2.ShiftTypesView.as_view(), name='Shift_type'),
 ]

@@ -24,16 +24,17 @@ class UsersSerializer(serializers.ModelSerializer):
 
 class Shifts(models.Model):
     __tablename__ = 'Shift'
-    task = models.CharField(max_length=250, null=False)
-    date = datetime.date.today()
+    date_start = models.DateField(null=True)
+    date_end = models.DateField(null=True)
     users_id = models.ForeignKey('Users', on_delete=models.CASCADE)
     shift_types_id = models.ForeignKey('Shift_types', on_delete=models.CASCADE)
+    task = models.CharField(max_length=250, null=True)
 
 
 class ShiftsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shifts
-        fields = ('task', 'date', 'id')
+        fields = ('date_start', 'date_end', 'users_id', 'shift_types_id', 'task', 'id')
 
 
 class Positions(models.Model):
@@ -50,8 +51,8 @@ class PositionsSerializer(serializers.ModelSerializer):
 class Shift_types(models.Model):
     __tablename__ = 'Shift_types'
     shift_name = models.CharField(max_length=250, null=False)
-    shift_start = models.DateField(max_length=250, null=False)
-    shift_end = models.DateField(max_length=250, null=False)
+    shift_start = models.TimeField()
+    shift_end = models.TimeField()
 
 
 class Shift_typesSerializer(serializers.ModelSerializer):
