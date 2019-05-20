@@ -7,5 +7,6 @@ urlpatterns = [
     path('users/', views.UsersView.as_view(), name='Users_id'),
     path('shifts/', views_2.ShiftsView.as_view(), name='Shifts'),
     path('shifts/<int:id>', views_2.ShiftsView.as_view(), name='Shifts_id'),
+    path('shifts/<str:date>', views_2.ShiftsView.as_view(), name='Shifts_id'),
     path('shift-types/', views_2.ShiftTypesView.as_view(), name='Shift_type'),
 ]

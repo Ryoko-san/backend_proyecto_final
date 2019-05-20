@@ -3,12 +3,19 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from api.models import Users, Shifts, ShiftsSerializer, Shift_types, Shift_typesSerializer
+from datetime import datetime
 
 class ShiftsView(APIView):
-    def get(self, request):
-        shifts = Shifts.objects.all()
-        serializer = ShiftsSerializer(shifts,  many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get(self, request, date=None):
+        if date is None:
+            shifts = Shifts.objects.all()
+            serializer = ShiftsSerializer(shifts,  many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            date_filter = datetime.strptime(date, "%Y-%m-%d")
+            shifts = Shifts.objects.filter(date_start__lte = date_filter, date_end__gte = date_filter)
+            serializer = ShiftsSerializer(shifts, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         newShift = json.loads(request.body)
@@ -29,6 +36,7 @@ class ShiftsView(APIView):
         new = Shifts(id=id, date_start=shift["date_start"],date_end=shift["date_end"], users_id=users_id, shift_types_id=shift_types_id, task=shift["task"])
         new.save()
         return Response("Turno actualizado", status=status.HTTP_200_OK)
+
 
 class ShiftTypesView(APIView):
     def get(self, request):
