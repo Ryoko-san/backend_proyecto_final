@@ -2,7 +2,7 @@ import json
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from api.models import UsersSerializer, Users
+from api.models import UsersSerializer, Users, Positions
 
 
 """
@@ -17,12 +17,13 @@ class UsersView(APIView):
 
         users = Users.objects.all()
         serializer = UsersSerializer(users, many=True)
-        return Response(json.dumps(serializer.data))
+        return Response(serializer.data)
 
     def post(self, request):
 
         val = json.loads(request.body)
-        new_user = Users.objects.create(email=val['email'], phone_number=val['phone_number'], f_name=val['f_name'], l_name=val['l_name'], role=val['role'])
+        positions_id = Positions.objects.get(id=val["positions_id"])
+        new_user = Users.objects.create(email=val['email'], phone_number=val['phone_number'], f_name=val['f_name'], l_name=val['l_name'], role=val['role'], positions_id=positions_id)
         new_user.save()
         return Response(json.dumps(val), status=status.HTTP_200_OK)
 

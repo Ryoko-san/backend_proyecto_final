@@ -2,7 +2,7 @@ import json
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from api.models import Users, Shifts, ShiftsSerializer, Shift_types, Shift_typesSerializer
+from api.models import Users, Shifts, ShiftsSerializer, Shift_types, Shift_typesSerializer, Positions, PositionsSerializer
 from datetime import datetime
 
 class ShiftsView(APIView):
@@ -24,11 +24,6 @@ class ShiftsView(APIView):
         Shifts.objects.create(date_start=newShift["date_start"],date_end=newShift["date_end"], users_id=users_id, shift_types_id=shift_types_id, task=newShift["task"])
         return Response("Nuevo turno creado", status=status.HTTP_200_OK)
 
-    def delete(self, request, id):
-        shift = Shifts.objects.filter(id = id)
-        shift.delete()
-        return Response("Turno eliminado", status=status.HTTP_204_NO_CONTENT)
-
     def put(self, request, id):
         shift = json.loads(request.body)
         shift_types_id = Shift_types.objects.get(id=shift["shift_types_id"])
@@ -36,6 +31,11 @@ class ShiftsView(APIView):
         new = Shifts(id=id, date_start=shift["date_start"],date_end=shift["date_end"], users_id=users_id, shift_types_id=shift_types_id, task=shift["task"])
         new.save()
         return Response("Turno actualizado", status=status.HTTP_200_OK)
+
+    def delete(self, request, id):
+        shift = Shifts.objects.filter(id = id)
+        shift.delete()
+        return Response("Turno eliminado", status=status.HTTP_204_NO_CONTENT)
 
 
 class ShiftTypesView(APIView):
@@ -48,3 +48,26 @@ class ShiftTypesView(APIView):
         new_type = json.loads(request.body)
         Shift_types.objects.create(shift_name=new_type["shift_name"], shift_start=new_type["shift_start"], shift_end=new_type["shift_end"])
         return Response("Nuevo tipo de turno creado", status=status.HTTP_200_OK)
+
+    def put(self, request, id):
+        update_type = json.loads(request.body)
+        update = Shift_types(id=id, shift_name=update_type["shift_name"], shift_start=update_type["shift_start"], shift_end=update_type["shift_end"])
+        update.save()
+        return Response("Tipo de turno actualizado", status=status.HTTP_200_OK)
+
+    def delete(self, request, id):
+        shift_type = Shift_types.objects.filter(id = id)
+        shift_type.delete()
+        return Response("Tipo de turno eliminado", status=status.HTTP_204_NO_CONTENT)
+
+
+class PositionsView(APIView):
+    def get(self, request):
+        positions = Positions.objects.all()
+        serializer = PositionsSerializer(positions,  many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        new_position = json.loads(request.body)
+        Positions.objects.create(position_name=new_position["position_name"])
+        return Response("Nuevo cargo creado", status=status.HTTP_200_OK)

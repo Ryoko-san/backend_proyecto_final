@@ -19,7 +19,7 @@ class Users(models.Model):
 class UsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Users
-        fields = ('email', 'phone_number', 'f_name', 'l_name', 'role', 'id')
+        fields = ('email', 'phone_number', 'f_name', 'l_name', 'role', 'positions_id', 'id')
 
 
 class Shifts(models.Model):
