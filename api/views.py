@@ -49,13 +49,23 @@ class UsersView(APIView):
 
 class ShiftViews (APIView):
 
-    def get (self, request, date=None):
-
+    def get (self, request, date=None, id=None):
+        
         mrange = monthrange(int(date[:4]), int(date[5:7]))
         lastday = str(mrange[1])
         datesum = date+"-01"
         datestart = datetime.strptime(datesum, "%Y-%m-%d")
         dateend = datetime.strptime(str(date+"-"+lastday), "%Y-%m-%d")
-        shifts = Shifts.objects.filter(date_start__lte = dateend, date_end__gte = datestart)
-        serializer = ShiftsSerializer(shifts, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        if id is not None:
+
+            shifts = Shifts.objects.filter(date_start__lte = dateend, date_end__gte = datestart, users_id=id)
+            serializer = ShiftsSerializer(shifts, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        else:
+
+            shifts = Shifts.objects.filter(date_start__lte = dateend, date_end__gte = datestart)
+            serializer = ShiftsSerializer(shifts, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK) 
+
