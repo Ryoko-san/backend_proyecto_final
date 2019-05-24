@@ -10,5 +10,6 @@ urlpatterns = [
     path('shifts/<str:date>', views_2.ShiftsView.as_view(), name='Shifts_date'),
     path('shifts-types/', views_2.ShiftTypesView.as_view(), name='Shifts_type'),
     path('shifts-types/<int:id>', views_2.ShiftTypesView.as_view(), name='Shifts_type_id'),
-    path('positions/', views_2.PositionsView.as_view(), name='Positions')
+    path('positions/', views_2.PositionsView.as_view(), name='Positions'),
+    path('positions/<int:id>', views_2.PositionsView.as_view(), name='Positions')
 ]

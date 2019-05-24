@@ -50,9 +50,9 @@ class ShiftTypesView(APIView):
         return Response("Nuevo tipo de turno creado", status=status.HTTP_200_OK)
 
     def put(self, request, id):
-        update_type = json.loads(request.body)
-        update = Shift_types(id=id, shift_name=update_type["shift_name"], shift_start=update_type["shift_start"], shift_end=update_type["shift_end"])
-        update.save()
+        updated_type = json.loads(request.body)
+        updated = Shift_types(id=id, shift_name=updated_type["shift_name"], shift_start=updated_type["shift_start"], shift_end=updated_type["shift_end"])
+        updated.save()
         return Response("Tipo de turno actualizado", status=status.HTTP_200_OK)
 
     def delete(self, request, id):
@@ -71,3 +71,14 @@ class PositionsView(APIView):
         new_position = json.loads(request.body)
         Positions.objects.create(position_name=new_position["position_name"])
         return Response("Nuevo cargo creado", status=status.HTTP_200_OK)
+
+    def put(self, request, id):
+        update_position = json.loads(request.body)
+        position = Positions(id=id, position_name=update_position["position_name"])
+        position.save()
+        return Response("Cargo actualizado", status=status.HTTP_200_OK)
+
+    def delete(self, request, id):
+        position = Positions.objects.filter(id = id)
+        position.delete()
+        return Response("Cargo eliminado", status=status.HTTP_204_NO_CONTENT)
