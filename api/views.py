@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from api.models import UsersSerializer, Users, Positions
+from django.contrib.auth.models import User
 
 
 """
@@ -23,7 +24,8 @@ class UsersView(APIView):
 
         val = json.loads(request.body)
         positions_id = Positions.objects.get(id=val["positions_id"])
-        new_user = Users.objects.create(email=val['email'], phone_number=val['phone_number'], f_name=val['f_name'], l_name=val['l_name'], role=val['role'], positions_id=positions_id)
+        user_id = User.objects.get(id=val["user_id"])
+        new_user = Users.objects.create(email=val['email'], phone_number=val['phone_number'], f_name=val['f_name'], l_name=val['l_name'], user_id=user_id, positions_id=positions_id)
         new_user.save()
         return Response(val, status=status.HTTP_200_OK)
 
@@ -41,7 +43,8 @@ class UsersView(APIView):
         users.phone_number= val['phone_number']
         users.f_name= val['f_name']
         users.l_name= val['l_name']
-        users.role= val['role']
+        user_id = User.objects.get(id=val["user_id"])
+        users.user_id = user_id
         positions_id = Positions.objects.get(id=val["positions_id"])
         users.positions_id= positions_id
         users.save()
