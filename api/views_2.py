@@ -102,4 +102,5 @@ class CustomAuthToken(ObtainAuthToken):
             'user_id': user.pk,
             'email': user.email,
             'is_staff':user.is_staff,
+            'is_authenticated': user.is_authenticated,
         })
