@@ -49,8 +49,12 @@ class UsersView(APIView):
 
 class ShiftViews (APIView):
 
-    def get (self, request, date=None, id=None):
-        
+    def get (self, request, id=None, date=None):
+        if request.user.id is not None:
+            id = request.user.id
+        else:
+            id = 1
+
         mrange = monthrange(int(date[:4]), int(date[5:7]))
         lastday = str(mrange[1])
         datesum = date+"-01"
