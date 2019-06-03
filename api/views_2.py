@@ -1,11 +1,12 @@
 import json
+from datetime import datetime
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from api.models import Users, Shifts, ShiftsSerializer, Shift_types, Shift_typesSerializer, Positions, PositionsSerializer
-from datetime import datetime
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
+from api.models import (Users, Shifts, ShiftsSerializer, Shift_types, Shift_typesSerializer, 
+                        Positions, PositionsSerializer)
+##from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+##from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 
@@ -16,11 +17,11 @@ class ShiftsView(APIView):
     def get(self, request, date=None):
         if date is None:
             shifts = Shifts.objects.all()
-            serializer = ShiftsSerializer(shifts,  many=True)
+            serializer = ShiftsSerializer(shifts, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
-            date_filter = datetime.strptime(date, "%Y-%m-%d")
-            shifts = Shifts.objects.filter(date_start__lte = date_filter, date_end__gte = date_filter)
+            dateFilter = datetime.strptime(date, "%Y-%m-%d")
+            shifts = Shifts.objects.filter(date_start__lte=dateFilter, date_end__gte=dateFilter)
             serializer = ShiftsSerializer(shifts, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -100,7 +101,12 @@ class CustomAuthToken(ObtainAuthToken):
         return Response({
             'token': token.key,
             'user_id': user.pk,
-            'email': user.email,
             'is_staff':user.is_staff,
+            'is_active': user.is_active,
             'is_authenticated': user.is_authenticated,
         })
+
+class Logout(APIView):
+    def get(self, request, format=None):
+        request.user.auth_token.delete()
+        return Response(status=status.HTTP_200_OK)

@@ -1,26 +1,19 @@
-"""
-All your application modules and serializers are going to be declared inside this file
-"""
+import datetime
 from rest_framework import serializers
 from django.db import models
-import datetime
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 
 
-class Users(models.Model):
+class Users(AbstractUser):
     __tablename__ = 'Users'
-    email = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=20, null=False)
-    f_name = models.CharField(max_length=250, null=False)
-    l_name = models.CharField(max_length=250, null=False)
-    user_id = models.OneToOneField(User, on_delete=models.CASCADE, null = True, blank = True)
+    phone_number = models.CharField(max_length=150, null=False)
     positions_id = models.ForeignKey('Positions', on_delete=models.CASCADE, null=True)
 
 
 class UsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Users
-        fields = ('email', 'phone_number', 'f_name', 'l_name', 'user_id', 'positions_id', 'id')
+        fields = ('id', 'first_name', 'last_name', 'email', 'phone_number', 'positions_id', 'is_active')
 
 
 class Shifts(models.Model):
