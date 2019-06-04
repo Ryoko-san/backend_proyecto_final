@@ -14,7 +14,6 @@ class Users(models.Model):
     l_name = models.CharField(max_length=250, null=False)
     role = models.CharField(max_length=250, null=False)
     positions_id = models.ForeignKey('Positions', on_delete=models.CASCADE, null=True)
-    client_id = models.ForeignKey('Client', on_delete=models.CASCADE, null=False)
 
 class UsersSerializer(serializers.ModelSerializer):
     class Meta:
@@ -40,13 +39,12 @@ class ShiftsSerializer(serializers.ModelSerializer):
 class Positions(models.Model):
     __tablename__ = 'Positions'
     position_name = models.CharField(max_length=250, null=False)
-    min_people = models.IntegerField(max_length=100, null=False)
 
 
 class PositionsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Positions
-        fields = ('position_name', 'id','min_people')
+        fields = ('position_name', 'id')
 
 
 class Shift_types(models.Model):
@@ -65,11 +63,9 @@ class Shift_typesSerializer(serializers.ModelSerializer):
 class Client(models.Model):
     __tablename__ = 'Client'
     client_name = models.CharField(max_length=250, null=False)
-    hour_start = models.DateField(null= False)
-    hour_end = models.DateField(null= False)
 
 
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
-        fields = ('client_name','hour_start','hour_end')
+        fields = ('client_name')

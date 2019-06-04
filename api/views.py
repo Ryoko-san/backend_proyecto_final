@@ -53,14 +53,13 @@ class ShiftViews (APIView):
         if request.user.id is not None:
             id = request.user.id
         else:
-            id = 1
+            id = 2
 
         mrange = monthrange(int(date[:4]), int(date[5:7]))
         lastday = str(mrange[1])
         datesum = date+"-01"
         datestart = datetime.strptime(datesum, "%Y-%m-%d")
         dateend = datetime.strptime(str(date+"-"+lastday), "%Y-%m-%d")
-
         if id is not None:
 
             shifts = Shifts.objects.filter(date_start__lte = dateend, date_end__gte = datestart, users_id=id)
