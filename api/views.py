@@ -22,7 +22,6 @@ class UsersView(APIView):
     def post(self, request):
 
         val = json.loads(request.body)
-        
         new_user = Users.objects.create_user(val['first_name'] + "_" + val['last_name'], val['email'], val['first_name'][0] + val['last_name'])
         new_user.first_name = val['first_name']
         new_user.last_name = val['last_name']
