@@ -1,9 +1,10 @@
 import json
+from datetime import datetime
+from calendar import monthrange
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from api.models import UsersSerializer, Users, Positions
-
+from api.models import UsersSerializer, Users, Positions, Shifts, ShiftsSerializer
 
 """
 The ContactsView will contain the logic on how to:
@@ -50,3 +51,24 @@ class UsersView(APIView):
         users.positions_id= positions_id
         users.save()
         return Response('ok', status=status.HTTP_200_OK)
+
+
+class ShiftViews (APIView):
+
+    def get (self, request, date=None):
+        if request.user.id is not None:
+            id = request.user.id
+        mrange = monthrange(int(date[:4]), int(date[5:7]))
+        lastday = str(mrange[1])
+        datesum = date+"-01"
+        datestart = datetime.strptime(datesum, "%Y-%m-%d")
+        dateend = datetime.strptime(str(date+"-"+lastday), "%Y-%m-%d")
+        if id is not None:
+            shifts = Shifts.objects.filter(date_start__lte = dateend, date_end__gte = datestart, users_id=id)
+            serializer = ShiftsSerializer(shifts, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            shifts = Shifts.objects.filter(date_start__lte = dateend, date_end__gte = datestart)
+            serializer = ShiftsSerializer(shifts, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK) 
+

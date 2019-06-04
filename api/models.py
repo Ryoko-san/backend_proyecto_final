@@ -9,7 +9,6 @@ class Users(AbstractUser):
     phone_number = models.CharField(max_length=150, null=False)
     positions_id = models.ForeignKey('Positions', on_delete=models.CASCADE, null=True)
 
-
 class UsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Users
@@ -58,8 +57,6 @@ class Shift_typesSerializer(serializers.ModelSerializer):
 class Client(models.Model):
     __tablename__ = 'Client'
     client_name = models.CharField(max_length=250, null=False)
-    users_id = models.ForeignKey('Users', on_delete=models.CASCADE)
-    shifts_id = models.ForeignKey('Shifts', on_delete=models.CASCADE)
 
 
 class ClientSerializer(serializers.ModelSerializer):

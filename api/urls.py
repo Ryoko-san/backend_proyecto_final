@@ -11,5 +11,6 @@ urlpatterns = [
     path('shifts-types/', views_2.ShiftTypesView.as_view(), name='shifts_type'),
     path('shifts-types/<int:id>', views_2.ShiftTypesView.as_view(), name='shifts_type_id'),
     path('positions/', views_2.PositionsView.as_view(), name='positions'),
-    path('positions/<int:id>', views_2.PositionsView.as_view(), name='positions_id')
+    path('positions/<int:id>', views_2.PositionsView.as_view(), name='positions_id'),
+    path('shifts/user/<str:date>', views.ShiftViews.as_view(), name='Shifts_id')
 ]
