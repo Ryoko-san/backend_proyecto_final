@@ -104,6 +104,8 @@ class CustomAuthToken(ObtainAuthToken):
             'is_staff':user.is_staff,
             'is_active': user.is_active,
             'is_authenticated': user.is_authenticated,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
         })
 
 class Logout(APIView):
